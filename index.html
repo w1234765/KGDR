@@ -1,0 +1,920 @@
+<html>
+
+<head>
+
+<title>KGDR</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#f3f3f3;
+    font-family:Arial;
+}
+
+/* 홈 화면 */
+
+.home{
+
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    background:#0f0f0f;
+
+    animation:fadeHome 1s ease;
+}
+
+.home h1{
+
+    font-size:110px;
+    margin:0;
+
+    color:white;
+
+    letter-spacing:5px;
+}
+
+.home p{
+
+    font-size:30px;
+    color:#888;
+
+    margin-top:10px;
+}
+
+.home button{
+
+    margin-top:40px;
+
+    padding:20px 50px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:white;
+
+    color:black;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.home button:hover{
+
+    transform:scale(1.05);
+}
+
+/* 상단 */
+
+.topbar{
+    width:100%;
+    height:80px;
+    background:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+
+    position:sticky;
+    top:0;
+    z-index:999;
+}
+
+.logo{
+    font-size:38px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.logo span{
+    color:#2196f3;
+}
+
+/* 메인 */
+
+.main{
+    width:1200px;
+    margin:auto;
+
+    display:none;
+
+    gap:30px;
+
+    padding-top:40px;
+}
+
+/* 버튼 영역 */
+
+.allToggleArea{
+
+    width:1200px;
+    max-width:95%;
+
+    margin:auto;
+
+    padding-top:30px;
+
+    display:none;
+
+    gap:15px;
+}
+
+.allToggleArea button{
+
+    padding:14px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#111;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.25s;
+
+    box-shadow:
+    0 4px 15px rgba(0,0,0,0.15);
+}
+
+.allToggleArea button:hover{
+
+    transform:translateY(-2px);
+
+    opacity:0.9;
+}
+
+/* 왼쪽 */
+
+.left{
+    flex:1;
+}
+
+/* 오른쪽 */
+
+.right{
+    width:300px;
+}
+
+/* 카드 */
+
+.level{
+    background:white;
+
+    border-radius:10px;
+
+    margin-bottom:25px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+    animation:fadeUp 0.8s ease;
+}
+
+.level:hover{
+    transform:translateY(-3px);
+}
+
+/* 윗부분 */
+
+.levelTop{
+    display:flex;
+    padding:20px;
+    gap:20px;
+}
+
+/* 썸네일 */
+
+.thumbnail{
+    width:240px;
+    height:135px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+}
+
+/* 텍스트 */
+
+.info{
+    flex:1;
+}
+
+.rank{
+    font-size:42px;
+    font-weight:bold;
+}
+
+.publisher{
+    margin-top:10px;
+    color:#666;
+    font-size:22px;
+}
+
+.points{
+    margin-top:10px;
+    color:#999;
+    font-size:18px;
+}
+
+/* 펼치기 버튼 */
+
+.toggle{
+    background:#fafafa;
+    padding:18px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    font-size:20px;
+    font-weight:bold;
+
+    transition:0.3s;
+}
+
+.toggle:hover{
+    background:#eeeeee;
+}
+
+/* 펼쳐지는 부분 */
+
+.content{
+    max-height:0;
+    overflow:hidden;
+
+    transition:
+    max-height 0.5s ease,
+    padding 0.5s ease;
+
+    background:#f8f8f8;
+
+    padding:0 20px;
+}
+
+.content.open{
+    max-height:1000px;
+    padding:20px;
+}
+
+/* 상세 내용 */
+
+.detailText{
+
+    font-size:20px;
+    line-height:1.8;
+
+    color:#333;
+
+    margin-bottom:25px;
+
+}
+
+/* 오른쪽 박스 */
+
+.sideBox{
+    background:white;
+
+    border-radius:10px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.sideTitle{
+    font-size:30px;
+    font-weight:bold;
+
+    margin-bottom:20px;
+}
+
+.sideText{
+    color:#666;
+    line-height:1.7;
+}
+
+/* 애니메이션 */
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+@keyframes fadeHome{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- 홈 -->
+
+<div class="home" id="home">
+
+    <h1>
+        KGDR
+    </h1>
+
+    <p>
+        Korea Geometry Dash Ranking
+    </p>
+
+    <button onclick="openRanking()">
+        순위표 보기
+    </button>
+
+</div>
+
+<!-- 상단 -->
+
+<div class="topbar">
+
+    <div class="logo" onclick="goHome()">
+        KGDR<span>.COM</span>
+    </div>
+
+</div>
+
+<!-- 전체 버튼 -->
+
+<div class="allToggleArea" id="allToggleArea">
+
+    <button onclick="openAll()">
+        모두 펼치기
+    </button>
+
+    <button onclick="closeAll()">
+        모두 접기
+    </button>
+
+</div>
+
+<!-- 메인 -->
+
+<div class="main">
+
+    <div class="left" id="left"></div>
+
+    <div class="right">
+
+        <div class="sideBox">
+
+            <div class="sideTitle">
+                KGDR
+            </div>
+
+            <div class="sideText">
+                Korea Geometry Dash Ranking<br><br>
+                Since 2020.07.18
+             </div>
+
+        </div>
+
+        <div class="sideBox">
+
+            <div class="sideTitle">
+                더보기
+            </div>
+
+            <div class="sideText">
+                KGDR 인물 랭킹<br>
+KGDR 국가 랭킹<br>
+                CDL 바로가기 <br>
+     UCDL 바로가기<br>
+후원자 목록 보기<br>
+운영진 목록 보기<br>
+KGDR 현황 보기<br>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const levels = [
+
+[
+"#1 KOCMOC UNLEASHED *",
+"Will verified by Arshadow",
+"H6v5U_yT2cU",
+"by ---- <br> verifier : Arshadow <br> ID : ---- <br> Password : ---- <br> 레벨 길이 : 1m 43s <br> 오브젝트 수 : ---- <br> 업로드 버전 : 2.2 예상 난이도 : #1 <br> 현 상태 : 베리파이 중",
+"승점 : 400"
+],
+
+[
+"#2 BOOBAWAMBA",
+"Verified by EastShark1",
+"TAPij318cjE",
+"by Akunakunn & more <br> verified by EastShark1<br> ID : 110816181 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 26s <br> 오브젝트 수 : 92,556 <br> 업로드 버전 : 2.2 Pointercrate 최고 순위 : #3 <br> GDDLadder 티어 : 39티어",
+"승점 : 390"
+],
+
+[
+"#3 Thinking Space II",
+"Verified by Zoink",
+"fnz9ddZjIGc",
+"by CairoX & more <br> verified by Zoink <br> ID : 119544028 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 09s <br> 오브젝트 수 : 139,553 <br> 업로드 버전 : 2.2 Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 39티어",
+"승점 : 380"
+],
+
+[
+"#4 Solar Flare",
+"Verified by swiborg",
+"XbbVDhn5XYM",
+"by Linear & Rynoxious <br> verified by swiborg <br> ID : 90390075 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 05s <br> 오브젝트 수 : 68,261 <br> 업로드 버전 : 2.1 Pointercrate 최고 순위 : #19 <br> GDDLadder 티어 : 37티어",
+"승점 : 370"
+],
+
+[
+"#5 Tidal Wave",
+"Verified by Zoink",
+"6O9Ck9bpBwY",
+"by OniLink <br> verified by Zoink <br> ID : 86407629 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 3m 00s <br> 오브젝트 수 : 220,177 <br> 업로드 버전 : 2.1 Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 39티어",
+"승점 : 360"
+],
+
+[
+"#6 FLAMEWALL",
+"Verified by Cuatrocientos",
+"HDR4WXZ8vds",
+"by Narwall & more <br> verified by Cuatrocientos <br> ID : 126242564 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 6m 46s <br> 오브젝트 수 : 413,803 <br> 업로드 버전 : 2.2 Pointercrate 최고 순위 : #2 <br> GDDLadder 티어 : 39티어",
+"승점 : 350"
+],
+
+[
+"#7 Codependence",
+"Verified by Kapinapi and ViralDL",
+"agsldGRId1Q",
+"by GaidenHertuny & more <br> verified by Kapinapi and ViralDL <br> ID : 62556400 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 06s <br> 오브젝트 수 : 140,258 <br> 업로드 버전 : 2.1 Pointercrate 최고 순위 : #8 <br> GDDLadder 티어 : 36티어",
+"승점 : 340"
+],
+
+[
+"#8 Acu",
+"Verified by neigefeu",
+"qTE6hE1a_vU",
+"by neigefeu <br> verified by neigefeu <br> ID : 61079355 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 17s <br> 오브젝트 수 : 32,293 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : - <br> GDDLadder 티어 : 20티어",
+"승점 : 330"
+],
+
+[
+"#9 Gaggatronda",
+"Verified by Zeronium",
+"yJHI3Pkv8wI",
+"by MoistyJC <br> verified by Zeronium <br> ID : 114990369 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 02s <br> 오브젝트 수 : 38,497 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #31 <br> GDDLadder 티어 : 36티어",
+"승점 : 320"
+],
+
+[
+"#10 The Golden",
+"Verified by nSwish",
+"SJ7SIDO5sj4",
+"by BoBoBoBoBoBoBo & more <br> verified by nSwish <br> ID : 60978746 <br> Password : 886988 <br> 레벨 길이 : 1m 24s <br> 오브젝트 수 : 117,647 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 35티어",
+"승점 : 310"
+],
+
+[
+"#11 Anathema",
+"Verified by Whizkid05",
+"4iOtRLKKbvU",
+"by nikroplays & more <br> verified by Whizkid05 <br> ID : 112313819 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 30s <br> 오브젝트 수 : 287,442 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #3 <br> GDDLadder 티어 : 39티어",
+"승점 : 300"
+],
+
+[
+"#12 Grief *",
+"Will verified by Doggie",
+"jYXxoDywnAE",
+"by IcEDCave & more <br> verifier : Doggie <br> ID : ---- <br> Password : ---- <br> 레벨 길이 : 2m 47s <br> 오브젝트 수 : 232,510 <br> 업로드 버전 : 2.2(예정) <br> 예상 난이도 : #1 <br> 현 상태 : 베리파이 중(CBS)",
+"승점 : 290"
+],
+
+[
+"#13 Tunnel of Despair",
+"Verified by Zoink",
+"0GC5og7gVS0",
+"by Exen & ImMaxX1 <br> verified by  Zoink <br> ID : 91351939 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 44s <br> 오브젝트 수 : 75,309 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #5 <br> GDDLadder 티어 : 38티어",
+"승점 : 280"
+],
+
+[
+"#14 Andromeda",
+"Verified by Taiago",
+"fFtQxxepyDo",
+"by insxne <br> verified by Taiago <br> ID : 114283297 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 16s <br> 오브젝트 수 : 179,343 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #4 <br> GDDLadder 티어 : 39티어",
+"승점 : 270"
+],
+
+[
+"#15 Defeated Circles",
+"Verified by Zoink",
+"R8BMscOkTrA",
+"by Galaxium & muriday & more <br> verified by Zoink <br> ID : 120012581 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 05s <br> 오브젝트 수 : 84,298 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #17 <br> GDDLadder 티어 : 38티어",
+"승점 : 260"
+],
+
+[
+"#16 Aquamarine *",
+"Verified by seals55",
+"_HTjJ7A5Pxw",
+"by sincos & more <br> verified by seals55 <br> ID : 77331805 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 55s <br> 오브젝트 수 : 22,588 <br> 업로드 버전 : 2.2 <br> 예상 난이도 : #10~15 <br> 현 상태 : 베리파이 됨(CBF)",
+"승점 : 250"
+],
+
+[
+"#17 KOCMOC",
+"Verified by Zoink",
+"ulaXL0SdzZk",
+"by Vernam & more <br> verified by Zoink <br> ID : 87665224 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 28s <br> 오브젝트 수 : 158,706 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #8 <br> GDDLadder 티어 : 38티어",
+"승점 : 240"
+],
+
+[
+"#18 Kyouki",
+"Verified by Demishio",
+"Gs6iYTd_FJk",
+"by Demishio <br> verified by Demishio <br> ID : 86018142 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 38s <br> 오브젝트 수 : 220,717 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #3 <br> GDDLadder 티어 : 38티어",
+"승점 : 230"
+],
+
+[
+"#19 The Yangire",
+"Verified by Dorami",
+"cvnsGG155gw",
+"by Dorami & more <br> verified by Dorami <br> ID : 110500920 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 29s <br> 오브젝트 수 : 348,185 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #32 <br> GDDLadder 티어 : 36티어",
+"승점 : 220"
+],
+
+[
+"#20 Subterminal Point",
+"Verified by PoCle",
+"Syh4W449IS4",
+"by SyQual <br> verified by PoCle <br> ID : 113599729 <br> Password : 없음 (복사 가능) <br> 레벨 길이 : 1m 10s <br> 오브젝트 수 : 40,970 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #12 <br> GDDLadder 티어 : 38티어",
+"승점 : 210"
+],
+
+[
+"#21 Avernus",
+"Verified by Zoink",
+"JL30R7f-iBE",
+"by BoBoBoBoBoBoBo & more <br> verified by Zoink <br> ID : 89496627 <br> Password : 30607 <br> 레벨 길이 : 1m 18s <br> 오브젝트 수 : 163,918 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 39티어",
+"승점 : 200"
+],
+
+[
+"#22 Every End",
+"Verified by Hqmy",
+"f-O_TnxIZBA",
+"by MindCap & more <br> verified by Hqmy <br> ID : 116174063 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 7m 20s <br> 오브젝트 수 : 326,380 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #4 <br> GDDLadder 티어 : 39티어",
+"승점 : 190"
+],
+
+[
+"#23 Orbit",
+"Verified by Zoink",
+"qlATViustKQ",
+"by MindCap & more <br> verified by Zoink <br> ID : 133175713 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 3m 42s <br> 오브젝트 수 : 308,666 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #5 <br> GDDLadder 티어 : 39티어",
+"승점 : 180"
+],
+
+[
+"#24 Spectre",
+"Verified by PersonHuman42",
+"4LOmOBtMAXk",
+"by xander556 & more <br> verified by PersonHuman42 <br> ID : 110815379 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 44s <br> 오브젝트 수 : 298,848 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #6 <br> GDDLadder 티어 : 38티어",
+"승점 : 170"
+],
+
+[
+"#25 Nullscapes",
+"Verified by Zoink",
+"nNxvmC0arnM",
+"by ItzKiba <br> verified by Zoink <br> ID : 109780665 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 21s <br> 오브젝트 수 : 63,179 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #2 <br> GDDLadder 티어 : 39티어",
+"승점 : 160"
+],
+
+[
+"#26 Zodiac",
+"Verified by Technical",
+"Si0aV7WkzpA",
+"by Bianox & more <br> verified by Technical <br> ID : 52374843 <br> Password : 5875 <br> 레벨 길이 : 3m 14s <br> 오브젝트 수 : 196,945 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 34티어",
+"승점 : 150"
+],
+
+[
+"#27 Shardscapes",
+"Verified by kiseta",
+"2njKGrzPmVY",
+"by ItzKiba <br> verified by kiseta <br> ID : 79997992 <br> Password : 	없음(복사 가능) <br> 레벨 길이 : 1m 19s <br> 오브젝트 수 : 81,617 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #30 <br> GDDLadder 티어 : 33티어",
+"승점 : 140"
+],
+
+[
+"#28 Firework",
+"Verified by Trick",
+"SuaAscUC8UM",
+"by CherryTeam <br> verified by Trick <br> ID : 75296202 <br> Password : 234000 <br> 레벨 길이 : 2m 07s <br> 오브젝트 수 : 165,198 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #2 (#1 because of bug) <br> GDDLadder 티어 : 37티어",
+"승점 : 130"
+],
+
+[
+"#29 Subsuming Vortex",
+"Verified by Cursed",
+"CLzkb9YMMEg",
+"by  Septagon7 & Renn241 <br> verified by Cursed <br> ID : 127997391 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 00s <br> 오브젝트 수 : 71,134 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #9 <br> GDDLadder 티어 : 39티어",
+"승점 : 120"
+],
+
+[
+"#30 Amethyst",
+"Verified by wPopoff",
+"iFBkJFUydkE",
+"by iMist & more <br> verified by wPopoff <br> ID : 119550490 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 42s <br> 오브젝트 수 : 147,177 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 39티어",
+"승점 : 110"
+],
+
+[
+"#31 LIMBO",
+"Verified by BGram",
+"gGz9rPR4pbw",
+"by MindCap & more <br> verified by BGram <br> ID : 86084399 <br> Password : 772002 <br> 레벨 길이 : 3m 27s <br> 오브젝트 수 : 392,419 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #7 <br> GDDLadder 티어 : 37티어",
+"승점 : 100"
+],
+
+[
+"#32 Menace",
+"Verified by Whizkid05",
+"ZT68SPg61CE",
+"by ArraegenGD <br> verified by Whizkid05 <br> ID : 107805281 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 3m 04s <br> 오브젝트 수 : 77,620 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #11 <br> GDDLadder 티어 : 38티어",
+"승점 : 90"
+],
+
+[
+"#33 Acheron",
+"Verified by Zoink",
+"_9iH0St4flQ",
+"by ryamu & more <br> verified by Zoink <br> ID : 73667628 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 06s <br> 오브젝트 수 : 47,965 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 39티어",
+"승점 : 80"
+],
+
+[
+"#34 Trueffet",
+"Verified by Baeru",
+"qkQidB9aPLA",
+"by SyQual & Rainstorm <br> verified by Baeru <br> ID : 71434979 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 14s <br> 오브젝트 수 : 78,711 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #3 <br> GDDLadder 티어 : 35티어",
+"승점 : 70"
+],
+
+[
+"#35 Congregation",
+"Verified by Floofle",
+"k3ebBTBeUTg",
+"by Presta <br> verified by Floofle <br> ID : 68668045 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 3m 04s <br> 오브젝트 수 : 17,567 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #35 <br> GDDLadder 티어 : 32티어",
+"승점 : 60"
+],
+
+[
+"#36 Thinking Space",
+"Verified by Atomic",
+"iHf2nanWjvE",
+"by HidekiX <br> verified by Atomic <br> ID : 54953085 <br> Password : 235236 <br> 레벨 길이 : 1m 39s <br> 오브젝트 수 : 29,969 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #4 <br> GDDLadder 티어 : 34티어",
+"승점 : 50"
+],
+
+[
+"#37 Quanteuse Processing",
+"Verified by Zoink",
+"sRUO72zI2GQ",
+"by Blankb & Renn241 <br> verified by Zoink <br> ID : 117692518 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 42s <br> 오브젝트 수 : 44,883 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #6 <br> GDDLadder 티어 : 39티어",
+"승점 : 40"
+],
+
+[
+"#38 Ashley Wave Trials",
+"Verified by Zoink",
+"KrdMngKSLKc",
+"by OddMod <br> verified by Zoink <br> ID : 62912799 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 06s <br> 오브젝트 수 : 48,670 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #13 <br> GDDLadder 티어 : 39티어",
+"승점 : 30"
+],
+
+[
+"#39 Abyss of Darkness",
+"Verified by Cursed",
+"zjJCqqV2410",
+"by Exen and more <br> verified by Cursed <br> ID : 49896559 <br> Password : 030422 <br> 레벨 길이 : 2m 05s <br> 오브젝트 수 : 113,276 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 38티어",
+"승점 : 20"
+],
+
+[
+"#40 Slaughterhouse",
+"Verified by Doggie",
+"7W5bZJY2IPI",
+"by IcEDCave and more <br> verified by Doggie <br> ID : 27690100 <br> Password : 147337 <br> 레벨 길이 : 1m 10s <br> 오브젝트 수 : 147337 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 38티어",
+"승점 : 10"
+],
+
+[
+"#41 Sonic Wave Infinity",
+"Verified by Xanii",
+"UQVNbhQEiLE",
+"by APTeamOffical & more <br> verified by Xanii <br> ID : 69685815 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 2m 43s <br> 오브젝트 수 : 249,017 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #2 <br> GDDLadder 티어 : 35티어",
+"승점 : 6"
+],
+
+[
+"#42 Penumbral",
+"Verified by w3rty",
+"d8uJzh872cs",
+"by nxhtrise & ego11 <br> verified by w3rty <br> ID : 134942736 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 1m 24s <br> 오브젝트 수 : 87,891 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #10 <br> GDDLadder 티어 : 39티어",
+"승점 : 0"
+],
+
+[
+"#43 Sakupen Circles",
+"Verified by TheDiamondPizza",
+"b66_Oe4Xo1w",
+"by Nick24 & more <br> verified by TheDiamondPizza <br> ID : 76962930 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 51s <br> 오브젝트 수 : 72,569 <br> 업로드 버전 : 2.1 <br> Pointercrate 최고 순위 : #1 <br> GDDLadder 티어 : 38티어",
+"승점 : 0"
+]
+
+];
+
+const left =
+document.getElementById("left");
+
+levels.forEach(level => {
+
+let thumbnail =
+`https://img.youtube.com/vi/${level[2]}/maxresdefault.jpg`;
+
+left.innerHTML += `
+
+<div class="level">
+
+    <div class="levelTop">
+
+        <a
+        href="https://youtu.be/${level[2]}"
+        target="_blank">
+
+            <img
+            class="thumbnail"
+            src="${thumbnail}">
+
+        </a>
+
+        <div class="info">
+
+            <div class="rank">
+                ${level[0]}
+            </div>
+
+            <div class="publisher">
+                ${level[1]}
+            </div>
+
+            <div class="points">
+                ${level[4]}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+    class="toggle"
+    onclick="toggleContent(this)">
+
+        펼치기 / 접기
+
+    </div>
+
+    <div class="content">
+
+        <div class="detailText">
+            ${level[3]}
+        </div>
+
+    </div>
+
+</div>
+
+`;
+
+});
+
+function toggleContent(button){
+
+    const content =
+    button.nextElementSibling;
+
+    content.classList.toggle("open");
+
+}
+
+function openAll(){
+
+    const contents =
+    document.querySelectorAll(".content");
+
+    contents.forEach(content => {
+
+        content.classList.add("open");
+
+    });
+
+}
+
+function closeAll(){
+
+    const contents =
+    document.querySelectorAll(".content");
+
+    contents.forEach(content => {
+
+        content.classList.remove("open");
+
+    });
+
+}
+
+function openRanking(){
+
+    document.getElementById("home")
+    .style.display = "none";
+
+    document.querySelector(".main")
+    .style.display = "flex";
+
+    document.getElementById("allToggleArea")
+    .style.display = "flex";
+
+}
+
+function goHome(){
+
+    document.getElementById("home")
+    .style.display = "flex";
+
+    document.querySelector(".main")
+    .style.display = "none";
+
+    document.getElementById("allToggleArea")
+    .style.display = "none";
+
+}
+
+</script>
+
+</body>
+
+</html>
