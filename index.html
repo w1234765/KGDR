@@ -503,6 +503,9 @@ body {
     }
 }
 
+#machineControls {display:inline-flex;gap:7px;align-items:center;flex-wrap:wrap}
+#machineControls[hidden] {display:none}
+#machineDates {background:#151c30;color:#e8efff;border:1px solid #34415d;border-radius:8px;padding:9px;font:inherit}
 </style>
 
 </head>
@@ -548,6 +551,8 @@ body {
     <button onclick="closeAll()">
         모두 접기
     </button>
+    <button id="machineButton" onclick="toggleMachine()">타임머신 ⏳</button>
+    <span id="machineControls" hidden><select id="machineDates" aria-label="기록 날짜"></select><button onclick="showHistory()">조회</button><button onclick="showCurrent()">현재 순위</button></span>
 
 </div>
 
@@ -989,28 +994,32 @@ levels.forEach((level,index)=>{
   level.displayRank=index+1;
 });
 
-const left =
-document.getElementById("left");
-
-left.innerHTML = `<header class="rankingHero"><div class="eyebrow">KOREA GEOMETRY DASH RANKING</div><h1>KGDR TOP 47</h1><p>2026.10.18 기준 순위표</p><div class="heroStats"><span>47 RANKED DEMONS</span></div></header>`;
-levels.forEach((level,index) => {
- const rank=level.displayRank;
+const left = document.getElementById("left");
+function renderRanking(rows, dateLabel) {
+ cancelDetailSequenceIfAvailable();
+left.innerHTML = `<header class="rankingHero"><div class="eyebrow">KOREA GEOMETRY DASH RANKING</div><h1>KGDR TOP ${rows.length}</h1><p>${dateLabel || "2026.10.18 기준 순위표"}</p><div class="heroStats"><span>${rows.length} RANKED DEMONS</span></div></header>`;
+rows.forEach((level,index) => {
+ const rank=index+1;
+ const name=level[0].replace(/<[^>]*>/g,'').replace(/^\s*#\d+\s*/, '').trim();
  if(rank===1 || rank===4 || rank===11 || rank===21 || rank===31 || rank===41){
-  const title=rank===1?'THE TOP THREE':rank===4?'TOP 4 — 10':`RANK ${rank} — ${Math.min(rank===11?20:rank===21?30:rank===31?40:47,47)}`;
+  const title=rank===1?'THE TOP THREE':rank===4?'TOP 4 — 10':`RANK ${rank} — ${Math.min(rank===11?20:rank===21?30:rank===31?40:rows.length,rows.length)}`;
   left.insertAdjacentHTML('beforeend',`<div class="sectionDivider">${title}</div>`);
  }
  const yt=level[2];
- const thumb=yt?`<a class="thumbnailLink" href="https://youtu.be/${yt}" target="_blank" rel="noopener"><img class="thumbnail" loading="lazy" src="https://img.youtube.com/vi/${yt}/hqdefault.jpg" alt="${level.displayName} thumbnail"></a>`:`<div class="thumbnailLink"><div class="thumbnail" style="display:grid;place-items:center;color:#a7b4ce;font-weight:800;font-size:12px;line-height:1.5;text-align:center">NO IMAGE</div></div>`;
+ const thumb=yt?`<a class="thumbnailLink" href="https://youtu.be/${yt}" target="_blank" rel="noopener"><img class="thumbnail" loading="lazy" src="https://img.youtube.com/vi/${yt}/hqdefault.jpg" alt="${name} thumbnail"></a>`:`<div class="thumbnailLink"><div class="thumbnail" style="display:grid;place-items:center;color:#a7b4ce;font-weight:800;font-size:12px;line-height:1.5;text-align:center">NO IMAGE</div></div>`;
  
  const item=document.createElement('article');
  item.className='level '+(rank<=3?'top'+rank:'');
- item.innerHTML=`<div class="levelTop"><div class="rankNumber">${String(rank).padStart(2,'0')}</div>${thumb}<div class="info"><div class="rank">${level.displayName}</div><div class="publisher">${level[1]}</div></div></div><div class="toggle" role="button" tabindex="0" aria-expanded="false">DETAILS &nbsp; ↓</div><div class="content"><div class="detailText">${level[3]}</div><div class="notes">${level[4]||''}</div></div>`;
+ item.innerHTML=`<div class="levelTop"><div class="rankNumber">${String(rank).padStart(2,'0')}</div>${thumb}<div class="info"><div class="rank">${name}</div><div class="publisher">${level[1]}</div></div></div><div class="toggle" role="button" tabindex="0" aria-expanded="false">DETAILS &nbsp; ↓</div><div class="content"><div class="detailText">${level[3]}</div><div class="notes">${level[4]||''}</div></div>`;
  const toggle=item.querySelector('.toggle');
  toggle.addEventListener('click',()=>toggleContent(toggle));
  toggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleContent(toggle)}});
  left.appendChild(item);
 });
 
+
+}
+function cancelDetailSequenceIfAvailable(){ if(typeof cancelDetailSequence === "function") cancelDetailSequence(); }
 // 개별 카드 및 전체 펼치기/접기 애니메이션
 const detailTimers = new Set();
 
@@ -1066,6 +1075,46 @@ function openAll() {
 
 function closeAll() {
     animateAllDetails(false);
+}
+
+renderRanking(levels, null);
+
+let historyDates = [];
+let historyMode = false;
+async function toggleMachine() {
+ const controls = document.getElementById('machineControls');
+ controls.hidden = !controls.hidden;
+ if (!controls.hidden) await loadHistoryDates();
+}
+async function loadHistoryDates() {
+ const select = document.getElementById('machineDates');
+ select.innerHTML = '<option value="">불러오는 중...</option>';
+ try {
+  const response = await fetch('./history/index.json', {cache:'no-store'});
+  if(!response.ok) throw new Error('HTTP '+response.status);
+  const data = await response.json();
+  historyDates = (data.dates || []).slice().sort().reverse();
+  select.innerHTML = '';
+  if (!historyDates.length) throw new Error('저장된 날짜가 없습니다.');
+  historyDates.forEach(date => { const option = document.createElement('option'); option.value=date; option.textContent=date; select.appendChild(option); });
+ } catch(err) {select.innerHTML = '<option value="">기록을 불러올 수 없습니다</option>'; console.error(err);}
+}
+async function showHistory() {
+ const date = document.getElementById('machineDates').value;
+ if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+ try {
+  const response = await fetch('./history/'+date+'.json', {cache:'no-store'});
+  if(!response.ok) throw new Error('HTTP '+response.status);
+  const data = await response.json();
+  if (!Array.isArray(data.rows)) throw new Error('잘못된 기록 형식');
+  historyMode = true;
+  renderRanking(data.rows, date+' 기준 순위표 · 타임머신');
+  document.getElementById('machineButton').textContent='타임머신 ⏳';
+ } catch(err) { alert('해당 날짜의 순위를 불러오지 못했습니다.'); console.error(err); }
+}
+function showCurrent() {
+ historyMode = false;
+ renderRanking(levels, null);
 }
 
 let transitionTimer = null;
