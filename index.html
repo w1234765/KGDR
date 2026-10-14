@@ -364,14 +364,39 @@ body {
 }
 
 .content {
-    display: none;
-    border-top: 1px solid #293142;
-    padding: 20px 23px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+    border-top: 0 solid #293142;
+    padding: 0 23px;
     background: #0e131f;
+    transition:
+        max-height 460ms cubic-bezier(.22, 1, .36, 1),
+        opacity 300ms ease,
+        padding 460ms cubic-bezier(.22, 1, .36, 1),
+        border-width 460ms ease,
+        visibility 0s linear 460ms;
 }
 
 .content.open {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    border-top-width: 1px;
+    padding: 20px 23px;
+    transition:
+        max-height 460ms cubic-bezier(.22, 1, .36, 1),
+        opacity 300ms ease,
+        padding 460ms cubic-bezier(.22, 1, .36, 1),
+        border-width 460ms ease,
+        visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content,
+    .content.open {
+        transition: none;
+    }
 }
 
 .detailText {
@@ -805,7 +830,7 @@ const levels = [
 [
 "#29 Orbit",
 "Verified by Zoink",
-"G4OCHaHkWls",
+"qlATViustKQ",
 "by MindCap & more <br> verified by Zoink <br> ID : 133175713 <br> Password : 없음(복사 가능) <br> 레벨 길이 : 3m 42s <br> 오브젝트 수 : 308,666 <br> 업로드 버전 : 2.2 <br> Pointercrate 최고 순위 : #5 <br> GDDLadder 티어 : 39티어",
     "<span style='color:#FFFFFF;font-weight:bold;'>비고 : -</span>",
 ],
@@ -985,43 +1010,61 @@ levels.forEach((level,index) => {
  left.appendChild(item);
 });
 
-function toggleContent(button){
+// 개별 카드 및 전체 펼치기/접기 애니메이션
+const detailTimers = new Set();
 
-    const content =
-    button.nextElementSibling;
+function setDetailOpen(content, isOpen) {
+    const button = content.previousElementSibling;
 
-    content.classList.toggle("open");
-    button.setAttribute("aria-expanded",content.classList.contains("open"));
-    button.innerHTML=content.classList.contains("open")?"CLOSE &nbsp; ↑":"DETAILS &nbsp; ↓";
-
-}
-
-function openAll(){
-
-    const contents =
-    document.querySelectorAll(".content");
-
-    contents.forEach(content => {
-
+    if (isOpen) {
         content.classList.add("open");
-        const t=content.previousElementSibling;t.setAttribute("aria-expanded","true");t.innerHTML="CLOSE &nbsp; ↑";
+        // 실제 콘텐츠 높이에 맞춰 펼쳐서 긴 설명도 잘리지 않게 합니다.
+        content.style.maxHeight = `${content.scrollHeight + 2}px`;
+    } else {
+        content.style.maxHeight = `${content.scrollHeight}px`;
+        // 현재 높이에서 0으로 줄어들도록 브라우저에 시작값을 확정합니다.
+        void content.offsetHeight;
+        content.classList.remove("open");
+        content.style.maxHeight = "0px";
+    }
 
-    });
-
+    button.setAttribute("aria-expanded", String(isOpen));
+    button.innerHTML = isOpen ? "CLOSE &nbsp; ↑" : "DETAILS &nbsp; ↓";
 }
 
-function closeAll(){
+function toggleContent(button) {
+    cancelDetailSequence();
+    const content = button.nextElementSibling;
+    setDetailOpen(content, !content.classList.contains("open"));
+}
 
-    const contents =
-    document.querySelectorAll(".content");
+function cancelDetailSequence() {
+    detailTimers.forEach(clearTimeout);
+    detailTimers.clear();
+}
 
-    contents.forEach(content => {
+function animateAllDetails(isOpen) {
+    cancelDetailSequence();
+    const contents = document.querySelectorAll(".content");
 
-        content.classList.remove("open");
-        const t=content.previousElementSibling;t.setAttribute("aria-expanded","false");t.innerHTML="DETAILS &nbsp; ↓";
-
+    contents.forEach((content, index) => {
+        // 전체 펼치기/접기 시 카드들이 가볍게 순차적으로 반응합니다.
+        const timer = setTimeout(() => {
+            detailTimers.delete(timer);
+            if (content.classList.contains("open") !== isOpen) {
+                setDetailOpen(content, isOpen);
+            }
+        }, index * 16);
+        detailTimers.add(timer);
     });
+}
 
+function openAll() {
+    animateAllDetails(true);
+}
+
+function closeAll() {
+    animateAllDetails(false);
 }
 
 let transitionTimer = null;
