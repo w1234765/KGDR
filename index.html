@@ -5,407 +5,405 @@
 <title>KGDR</title>
 
 <style>
-
-body{
-    margin:0;
-    background:#f3f3f3;
-    font-family:Arial;
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+:root {
+    color-scheme: dark;
+    --bg: #080a10;
+    --panel: #111521;
+    --panel2: #171c2a;
+    --border: #2a3040;
+    --text: #f5f7fc;
+    --muted: #949db2;
+    --gold: #ffcb67;
+    --accent: #88a9ff;
 }
 
-/* 홈 화면 */
-
-.home{
-
-    width:100%;
-    height:100vh;
-
-    display:flex;
-    flex-direction:column;
-
-    justify-content:center;
-    align-items:center;
-
-    background:#0f0f0f;
-
-    animation:fadeHome 1s ease;
+* {
+    box-sizing: border-box;
 }
 
-.home h1{
-
-    font-size:110px;
-    margin:0;
-
-    color:white;
-
-    letter-spacing:5px;
+html {
+    scroll-behavior: smooth;
 }
 
-.home p{
-
-    font-size:30px;
-    color:#888;
-
-    margin-top:10px;
+body {
+    margin: 0;
+    background: radial-gradient(ellipse at 50% -10%,#1c2644 0%,#0a0d17 43%,#080a10 85%);
+    color: var(--text);
+    font-family: "DM Sans",Arial,sans-serif;
+    min-height: 100vh;
 }
 
-.home button{
-
-    margin-top:40px;
-
-    padding:20px 50px;
-
-    border:none;
-
-    border-radius:15px;
-
-    background:white;
-
-    color:black;
-
-    font-size:24px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:0.3s;
+.home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+    background: radial-gradient(circle at 50% 35%,#283459 0%,#111523 43%,#080a10 78%);
 }
 
-.home button:hover{
-
-    transform:scale(1.05);
+.home:before {
+    content: "GEOMETRY DASH · KOREA";
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--accent);
+    font-weight: 800;
+    margin-bottom: 22px;
 }
 
-/* 상단 */
-
-.topbar{
-    width:100%;
-    height:80px;
-    background:white;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-
-    position:sticky;
-    top:0;
-    z-index:999;
+.home h1 {
+    font: 700 clamp(86px,17vw,180px)/1 "Space Grotesk",sans-serif;
+    letter-spacing: -9px;
+    margin: 0;
+    background: linear-gradient(130deg,#fff 15%,#aebff6 80%);
+    background-clip: text;
+    color: transparent;
 }
 
-.logo{
-    font-size:38px;
-    font-weight:bold;
-    cursor:pointer;
+.home p {
+    font-size: clamp(16px,2.6vw,24px);
+    color: #a6aec4;
+    letter-spacing: 2px;
 }
 
-.logo span{
-    color:#2196f3;
+.home button,.goButton {
+    border: 1px solid #a8b8ed;
+    background: #e9efff;
+    color: #111729;
+    border-radius: 13px;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 16px 32px;
+    cursor: pointer;
+    transition: .2s;
 }
 
-/* 메인 */
-
-.main{
-    width:1200px;
-    margin:auto;
-
-    display:none;
-
-    gap:30px;
-
-    padding-top:40px;
+.home button {
+    margin-top: 35px;
 }
 
-/* 버튼 영역 */
-
-.allToggleArea{
-
-    width:1200px;
-    max-width:95%;
-
-    margin:auto;
-
-    padding-top:30px;
-
-    display:none;
-
-    gap:15px;
+.home button:hover,.goButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px #0008;
 }
 
-.allToggleArea button{
-
-    padding:14px 28px;
-
-    border:none;
-
-    border-radius:14px;
-
-    background:#111;
-
-    color:white;
-
-    font-size:17px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:0.25s;
-
-    box-shadow:
-    0 4px 15px rgba(0,0,0,0.15);
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 max(24px,calc((100vw - 1300px)/2));
+    background: #0b0e17ed;
+    border-bottom: 1px solid #252b3a;
+    backdrop-filter: blur(20px);
 }
 
-.allToggleArea button:hover{
-
-    transform:translateY(-2px);
-
-    opacity:0.9;
+.logo {
+    font: 700 27px "Space Grotesk",sans-serif;
+    cursor: pointer;
+    letter-spacing: -1.5px;
 }
 
-/* 왼쪽 */
-
-.left{
-    flex:1;
+.logo span {
+    color: #91aaff;
 }
 
-/* 오른쪽 */
-
-.right{
-    width:300px;
+.topbar:after {
+    content: "THE OFFICIAL RANKING";
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8793ad;
+    font-weight: 800;
 }
 
-/* 카드 */
-
-.level{
-    background:white;
-
-    border-radius:10px;
-
-    margin-bottom:25px;
-
-    overflow:hidden;
-
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-
-    transition:0.3s;
-
-    animation:fadeUp 0.8s ease;
+.allToggleArea {
+    display: none;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 20px 0;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.level:hover{
-    transform:translateY(-3px);
+.allToggleArea button {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 17px;
+    background: #171d2d;
+    color: #d8dff0;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s;
 }
 
-/* 윗부분 */
-
-.levelTop{
-    display:flex;
-    padding:20px;
-    gap:20px;
+.allToggleArea button:hover {
+    background: #293248;
 }
 
-/* 썸네일 */
-
-.thumbnail{
-    width:240px;
-    height:135px;
-
-    object-fit:cover;
-
-    border-radius:10px;
+.main {
+    display: none;
+    max-width: 1300px;
+    margin: auto;
+    padding: 25px 20px 80px;
+    gap: 28px;
+    align-items: flex-start;
 }
 
-/* 텍스트 */
-
-.info{
-    flex:1;
+.left {
+    flex: 1;
+    min-width: 0;
 }
 
-.rank{
-    font-size:34px;
-    font-weight:bold;
+.right {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 103px;
 }
 
-.publisher{
-    margin-top:10px;
-    color:#666;
-    font-size:22px;
+.sideBox {
+    border: 1px solid var(--border);
+    background: #111521;
+    border-radius: 17px;
+    padding: 25px;
+    margin-bottom: 17px;
 }
 
-    .extra{
-
-    margin-top:12px;
-
-    display:inline-block;
-
-    padding:6px 14px;
-
-    border-radius:999px;
-
-    background:#111;
-
-    color:white;
-
-    font-size:15px;
-
-    font-weight:bold;
-
+.sideTitle {
+    font: 700 23px "Space Grotesk",sans-serif;
+    margin-bottom: 16px;
 }
 
-    .extra{
-
-    margin-top:10px;
-
-    color:#999;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-}
-/* 펼치기 버튼 */
-
-.toggle{
-    background:#fafafa;
-    padding:18px;
-
-    text-align:center;
-
-    cursor:pointer;
-
-    font-size:20px;
-    font-weight:bold;
-
-    transition:0.3s;
+.sideText {
+    font-size: 14px;
+    line-height: 2;
+    color: #a4acc0;
 }
 
-.toggle:hover{
-    background:#eeeeee;
+.goButton {
+    width: 100%;
+    margin-top: 17px;
+    font-size: 13px;
+    padding: 14px;
 }
 
-/* 펼쳐지는 부분 */
-
-.content{
-    max-height:0;
-    overflow:hidden;
-
-    transition:
-    max-height 0.5s ease,
-    padding 0.5s ease;
-
-    background:#f8f8f8;
-
-    padding:0 20px;
+.rankingHero {
+    padding: 10px 4px 27px;
 }
 
-.content.open{
-    max-height:1000px;
-    padding:20px;
+.eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #9eb6ff;
+    margin-bottom: 12px;
 }
 
-/* 상세 내용 */
-
-.detailText{
-
-    font-size:20px;
-    line-height:1.8;
-
-    color:#333;
-
-    margin-bottom:25px;
-
+.rankingHero h1 {
+    font: 700 clamp(38px,5vw,62px)/1.05 "Space Grotesk",sans-serif;
+    letter-spacing: -2.7px;
+    margin: 0 0 13px;
 }
 
-/* 오른쪽 박스 */
-
-.sideBox{
-    background:white;
-
-    border-radius:10px;
-
-    padding:25px;
-
-    margin-bottom:25px;
-
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+.rankingHero p {
+    color: #9da6bc;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
 }
 
-.sideTitle{
-    font-size:30px;
-    font-weight:bold;
-
-    margin-bottom:20px;
+.heroStats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 23px;
 }
 
-.sideText{
-    color:#666;
-    line-height:1.7;
+.heroStats span {
+    border: 1px solid #2a3349;
+    background: #141b2b;
+    border-radius: 30px;
+    padding: 9px 14px;
+    color: #b9c5dd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
-/* 애니메이션 */
-
-@keyframes fadeUp{
-
-    from{
-        opacity:0;
-        transform:translateY(30px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
+.sectionDivider {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #8b96ad;
+    font-weight: 800;
+    padding: 26px 3px 15px;
 }
 
-@keyframes fadeHome{
-
-    from{
-        opacity:0;
-    }
-
-    to{
-        opacity:1;
-    }
-
+.level {
+    --tone: #7887a4;
+    background: linear-gradient(115deg,#171c29,#10141e);
+    border: 1px solid #293044;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: transform .2s,border-color .2s;
+    box-shadow: 0 5px 20px #0002;
 }
 
-.goButton{
-
-    width:100%;
-
-    padding:18px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:black;
-
-    color:white;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:0.3s;
-
-    margin-top:20px;
-
+.level:hover {
+    transform: translateY(-2px);
+    border-color: #53627f;
 }
 
-.goButton:hover{
-
-    background:#333333;
-
-    transform:translateY(-2px);
-
+.level.top1 {
+    --tone: #f8c768;
+    border-color: #6c5430;
+    background: linear-gradient(120deg,#292318,#151821 75%);
 }
-    
+
+.level.top2 {
+    --tone: #c4d1e9;
+    border-color: #536078;
+    background: linear-gradient(120deg,#20283a,#131823 75%);
+}
+
+.level.top3 {
+    --tone: #d8a57e;
+    border-color: #5d463c;
+    background: linear-gradient(120deg,#28201f,#151821 75%);
+}
+
+.levelTop {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 17px;
+}
+
+.rankNumber {
+    flex: 0 0 57px;
+    text-align: center;
+    font: 700 29px "Space Grotesk",sans-serif;
+    color: var(--tone);
+    letter-spacing: -2px;
+}
+
+.thumbnailLink {
+    display: block;
+    flex: 0 0 190px;
+    line-height: 0;
+}
+
+.thumbnail {
+    width: 190px;
+    height: 107px;
+    object-fit: cover;
+    border-radius: 9px;
+    background: #222b40;
+}
+
+.info {
+    flex: 1;
+    min-width: 0;
+}
+
+.rank {
+    font: 700 clamp(18px,2vw,25px)/1.25 "Space Grotesk",sans-serif;
+    letter-spacing: -.7px;
+    overflow-wrap: anywhere;
+}
+
+.publisher {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #a2acc2;
+}
+
+.points {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #a6b1c9;
+}
+
+.statusBadge {
+    display: inline-block;
+    border-radius: 6px;
+    background: #29384b;
+    color: #c1d4ff;
+    padding: 5px 9px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.top1 .statusBadge {
+    background: #4b3c21;
+    color: #fbd78e;
+}
+
+.toggle {
+    border-top: 1px solid #2b3242;
+    padding: 11px 18px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #aab5cb;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.toggle:hover {
+    background: #222b3e;
+}
+
+.content {
+    display: none;
+    border-top: 1px solid #293142;
+    padding: 20px 23px;
+    background: #0e131f;
+}
+
+.content.open {
+    display: block;
+}
+
+.detailText {
+    font-size: 14px;
+    line-height: 2;
+    color: #c7cede;
+}
+
+.detailText br {
+    display: block;
+    content: "";
+    margin: 2px 0;
+}
+
+.notes {
+    margin-top: 18px;
+    border-top: 1px solid #2d3445;
+    padding-top: 13px;
+    font-size: 13px;
+    color: #b8c4d9;
+}
+
+.rankingFooter {
+    text-align: center;
+    color: #77849d;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 30px 0;
+}
+
+@media(max-width:980px){.main{flex-direction:column}.right{width:100%;position:static;display:grid;grid-template-columns:1fr 1fr;gap:15px}.sideBox{margin:0}}
+@media(max-width:620px){.topbar{padding:0 16px;min-height:64px}.topbar:after{font-size:8px;letter-spacing:1px}.main{padding:20px 12px 60px}.allToggleArea{padding:20px 12px 0}.levelTop{padding:12px;gap:10px}.rankNumber{flex-basis:36px;font-size:22px}.thumbnailLink{flex-basis:100px}.thumbnail{width:100px;height:72px}.rank{font-size:17px}.publisher{font-size:10px}.points{margin-top:7px}.right{display:block}.sideBox{margin-bottom:12px}.home h1{letter-spacing:-5px}}
 </style>
 
 </head>
@@ -489,7 +487,7 @@ KGDR 국가 랭킹<br>
 후원자 목록 보기<br>
 운영진 목록 보기<br>
 KGDR 현황 보기<br>
-현재 누적 재생목록 조회수 : 40,906,561회 <br>
+
             </div>
 <a href="https://www.youtube.com/playlist?list=PLl77tXHmFW8TeEvZJvwJqDpcsaF_iYKlT" target="_blank">
     <button class="goButton">
@@ -715,7 +713,6 @@ const levels = [
     "<span style='color:#000000;font-weight:bold;'>비고 : -</span>",
 ],
 
-
 [
 "#27 Every End",
 "Verified by Hqmy",
@@ -878,68 +875,36 @@ const levels = [
 
 ];
 
+// 10월 18일 공식 등재 예정: Artemis 13 #2 확정.
+// 상세 정보가 제공되지 않은 항목은 임의로 작성하지 않습니다.
+levels.splice(1,0,["#2 Artemis 13", "", "", "", ""]);
+// 기존 2위 이하를 한 단계씩 이동하여 총 47위 표시.
+levels.forEach((level,index)=>{
+  const label=level[0].replace(/<[^>]*>/g,'').replace(/^\s*#\d+\s*/, '').trim();
+  level.displayName=label;
+  level.displayRank=index+1;
+});
+
 const left =
 document.getElementById("left");
 
-levels.forEach(level => {
-
-let thumbnail =
-`https://img.youtube.com/vi/${level[2]}/maxresdefault.jpg`;
-
-left.innerHTML += `
-
-<div class="level">
-
-    <div class="levelTop">
-
-        <a
-        href="https://youtu.be/${level[2]}"
-        target="_blank">
-
-            <img
-            class="thumbnail"
-            src="${thumbnail}">
-
-        </a>
-
-        <div class="info">
-
-            <div class="rank">
-                ${level[0]}
-            </div>
-
-            <div class="publisher">
-                ${level[1]}
-            </div>
-
-            <div class="points">
-                ${level[4]}
-            </div>
-
-        </div>
-
-    </div>
-
-    <div
-    class="toggle"
-    onclick="toggleContent(this)">
-
-        펼치기 / 접기
-
-    </div>
-
-    <div class="content">
-
-        <div class="detailText">
-            ${level[3]}
-        </div>
-
-    </div>
-
-</div>
-
-`;
-
+left.innerHTML = `<header class="rankingHero"><div class="eyebrow">KOREA GEOMETRY DASH RANKING</div><h1>KGDR TOP 47</h1><p>2026.10.18 기준 순위표</p><div class="heroStats"><span>47 RANKED DEMONS</span></div></header>`;
+levels.forEach((level,index) => {
+ const rank=level.displayRank;
+ if(rank===1 || rank===4 || rank===11 || rank===21 || rank===31 || rank===41){
+  const title=rank===1?'THE TOP THREE':rank===4?'TOP 4 — 10':`RANK ${rank} — ${Math.min(rank===11?20:rank===21?30:rank===31?40:47,47)}`;
+  left.insertAdjacentHTML('beforeend',`<div class="sectionDivider">${title}</div>`);
+ }
+ const yt=level[2];
+ const thumb=yt?`<a class="thumbnailLink" href="https://youtu.be/${yt}" target="_blank" rel="noopener"><img class="thumbnail" loading="lazy" src="https://img.youtube.com/vi/${yt}/hqdefault.jpg" alt="${level.displayName} thumbnail"></a>`:`<div class="thumbnailLink"><div class="thumbnail" style="display:grid;place-items:center;color:#a7b4ce;font-weight:800;font-size:12px;line-height:1.5;text-align:center">NO IMAGE</div></div>`;
+ 
+ const item=document.createElement('article');
+ item.className='level '+(rank<=3?'top'+rank:'');
+ item.innerHTML=`<div class="levelTop"><div class="rankNumber">${String(rank).padStart(2,'0')}</div>${thumb}<div class="info"><div class="rank">${level.displayName}</div><div class="publisher">${level[1]}</div></div></div><div class="toggle" role="button" tabindex="0" aria-expanded="false">DETAILS &nbsp; ↓</div><div class="content"><div class="detailText">${level[3]}</div><div class="notes">${level[4]||''}</div></div>`;
+ const toggle=item.querySelector('.toggle');
+ toggle.addEventListener('click',()=>toggleContent(toggle));
+ toggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleContent(toggle)}});
+ left.appendChild(item);
 });
 
 function toggleContent(button){
@@ -948,6 +913,8 @@ function toggleContent(button){
     button.nextElementSibling;
 
     content.classList.toggle("open");
+    button.setAttribute("aria-expanded",content.classList.contains("open"));
+    button.innerHTML=content.classList.contains("open")?"CLOSE &nbsp; ↑":"DETAILS &nbsp; ↓";
 
 }
 
@@ -959,6 +926,7 @@ function openAll(){
     contents.forEach(content => {
 
         content.classList.add("open");
+        const t=content.previousElementSibling;t.setAttribute("aria-expanded","true");t.innerHTML="CLOSE &nbsp; ↑";
 
     });
 
@@ -972,6 +940,7 @@ function closeAll(){
     contents.forEach(content => {
 
         content.classList.remove("open");
+        const t=content.previousElementSibling;t.setAttribute("aria-expanded","false");t.innerHTML="DETAILS &nbsp; ↓";
 
     });
 
